@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Parrainage</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #03140a;
+      --bg2: #051e10;
+      --card: #082716;
+      --card2: #0b321d;
+
+      --gold: #d4a317;
+      --gold-light: #f0c94f;
+
+      --green: #10b981;
+      --green-light: #34d399;
+
+      --text: #eaf5ee;
+      --muted: #8fa99a;
+
+      --border: rgba(212, 163, 23, .20);
+      --border-light: rgba(255, 255, 255, .07);
+
+      --danger: #ef4444;
+      --shadow: 0 20px 55px rgba(0,0,0,.30);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+
+      background:
+        radial-gradient(circle at top right, rgba(16,185,129,.08), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(212,163,23,.05), transparent 30%),
+        var(--bg);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .topbar {
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 28px;
+
+      background: rgba(3,20,10,.95);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      object-fit: cover;
+
+      border: 1px solid rgba(212,163,23,.45);
+    }
+
+    .brand-name {
+      color: var(--gold-light);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: rgba(8,39,22,.85);
+      color: var(--text);
+
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 30px));
+      margin: auto;
+      padding: 35px 0 60px;
+    }
+
+    .heading {
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: clamp(27px, 5vw, 36px);
+      font-weight: 800;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(8,39,22,.97), rgba(5,30,16,.97));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .card-description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* CODE */
+
+    .code-box {
+      padding: 18px;
+
+      background: rgba(212,163,23,.055);
+      border: 1px solid rgba(212,163,23,.20);
+
+      border-radius: 13px;
+
+      text-align: center;
+    }
+
+    .code-label {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .referral-code {
+      color: var(--gold-light);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+
+    /* LINK */
+
+    .link-box {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .link-input {
+      flex: 1;
+      min-width: 0;
+
+      height: 50px;
+
+      padding: 0 14px;
+
+      border-radius: 11px;
+
+      border: 1px solid var(--border);
+      outline: none;
+
+      background: rgba(0,0,0,.20);
+      color: var(--text);
+
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .link-input:focus {
+      border-color: var(--gold);
+    }
+
+    .copy-btn,
+    .share-btn {
+      height: 50px;
+
+      padding: 0 18px;
+
+      border-radius: 11px;
+
+      border: 1px solid var(--gold);
+
+      background: rgba(212,163,23,.10);
+
+      color: var(--gold-light);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+    }
+
+    .share-btn {
+      border-color: rgba(16,185,129,.35);
+      background: rgba(16,185,129,.08);
+      color: var(--green-light);
+    }
+
+    .copy-btn:hover {
+      background: rgba(212,163,23,.18);
+    }
+
+    .share-btn:hover {
+      background: rgba(16,185,129,.15);
+    }
+
+    .message {
+      min-height: 18px;
+      margin-top: 10px;
+
+      color: var(--green-light);
+
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* LOADING */
+
+    .loading {
+      padding: 45px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 27px;
+      height: 27px;
+
+      margin: 0 auto 14px;
+
+      border-radius: 50%;
+
+      border: 2px solid rgba(212,163,23,.18);
+      border-top-color: var(--gold);
+
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error {
+      color: #fca5a5;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .retry {
+      margin-top: 14px;
+      padding: 10px 16px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+      background: rgba(212,163,23,.08);
+
+      color: var(--gold-light);
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      .topbar {
+        height: 64px;
+        padding: 0 15px;
+      }
+
+      .brand-logo {
+        width: 37px;
+        height: 37px;
+      }
+
+      .brand-name {
+        font-size: 17px;
+      }
+
+      .container {
+        width: calc(100% - 20px);
+        padding-top: 25px;
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      .link-box {
+        flex-direction: column;
+      }
+
+      .link-input {
+        width: 100%;
+      }
+
+      .copy-btn,
+      .share-btn {
+        width: 100%;
+      }
+
+      .referral-code {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <a href="dashboard.html" class="brand">
+
+      <img
+        src="logo.jpg"
+        alt="ROLEX"
+        class="brand-logo"
+        onerror="this.style.display='none';"
+      >
+
+      <span class="brand-name">
+        ROLEX
+      </span>
+
+    </a>
+
+    <button
+      type="button"
+      class="back-btn"
+      id="backBtn"
+    >
+      ←
+    </button>
+
+  </header>
+
+
+  <main class="container">
+
+    <section class="heading">
+
+      <div class="eyebrow">
+        ROLEX Finance
+      </div>
+
+      <h1>
+        Parrainage
+      </h1>
+
+      <p>
+        Invitez de nouveaux membres avec votre lien personnel.
+      </p>
+
+    </section>
+
+
+    <div id="loading" class="card loading">
+
+      <div class="spinner"></div>
+
+      Chargement de vos informations de parrainage...
+
+    </div>
+
+
+    <div id="content" style="display:none;">
+
+      <!-- CODE DE PARRAINAGE -->
+
+      <section class="card">
+
+        <div class="card-title">
+          Votre code de parrainage
+        </div>
+
+        <div class="card-description">
+          Utilisez ce code pour inviter de nouveaux membres.
+        </div>
+
+        <div class="code-box">
+
+          <div class="code-label">
+            Code de parrainage
+          </div>
+
+          <div
+            class="referral-code"
+            id="referralCode"
+          >
+            —
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- LIEN D'INVITATION -->
+
+      <section class="card">
+
+        <div class="card-title">
+          Votre lien d'invitation
+        </div>
+
+        <div class="card-description">
+          Partagez ce lien pour permettre à votre filleul de s'inscrire directement avec votre code.
+        </div>
+
+        <div class="link-box">
+
+          <input
+            type="text"
+            id="invitationLink"
+            class="link-input"
+            readonly
+          >
+
+          <button
+            type="button"
+            id="copyBtn"
+            class="copy-btn"
+          >
+            Copier
+          </button>
+
+          <button
+            type="button"
+            id="shareBtn"
+            class="share-btn"
+          >
+            Partager
+          </button>
+
+        </div>
+
+        <div
+          id="message"
+          class="message"
+        ></div>
+
+      </section>
+
+    </div>
+
+
+    <div
+      id="error"
+      class="card"
+      style="display:none;"
+    >
+
+      <div class="error">
+
+        <strong>
+          Impossible de charger les informations de parrainage.
+        </strong>
+
+        <br>
+
+        <span id="errorMessage"></span>
+
+        <br>
+
+        <button
+          type="button"
+          class="retry"
+          id="retryBtn"
+        >
+          Réessayer
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="parrainage.js"></script>
+
+</body>
+</html>
