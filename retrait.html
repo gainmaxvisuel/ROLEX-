@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Retrait</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #03140a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    .header {
+      height: 68px;
+      background: #051e10;
+      border-bottom: 1px solid rgba(212,163,23,.18);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back {
+      color: #d4a317;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .logo {
+      color: #d4a317;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+
+    .user {
+      color: #929e97;
+      font-size: 13px;
+      max-width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: auto;
+      padding: 30px 18px 50px;
+    }
+
+    .heading {
+      margin-bottom: 24px;
+    }
+
+    .heading h1 {
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .heading p {
+      color: #849188;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: #071d11;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .balance-card {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(212,163,23,.10),
+          rgba(16,185,129,.04)
+        );
+      border-color: rgba(212,163,23,.16);
+    }
+
+    .label {
+      color: #87938d;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .balance {
+      font-size: 29px;
+      font-weight: 900;
+      color: #d4a317;
+    }
+
+    .account-card {
+      position: relative;
+    }
+
+    .account-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 17px;
+    }
+
+    .account-status {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      padding: 6px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(16,185,129,.09);
+      color: #10b981;
+      border: 1px solid rgba(16,185,129,.15);
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .account-item {
+      padding: 13px;
+      background: #04170c;
+      border-radius: 12px;
+    }
+
+    .account-item small {
+      display: block;
+      color: #68766e;
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    .account-item strong {
+      display: block;
+      color: #dce2de;
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .warning {
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(212,163,23,.055);
+      border: 1px solid rgba(212,163,23,.14);
+      display: flex;
+      gap: 11px;
+      margin-bottom: 18px;
+    }
+
+    .warning i {
+      color: #d4a317;
+      margin-top: 2px;
+    }
+
+    .warning strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .warning span {
+      color: #87938d;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .form-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      color: #aab3ae;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #68766e;
+      font-size: 15px;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      background: #04170c;
+      color: #fff;
+      outline: none;
+      padding: 0 15px 0 44px;
+      font-size: 16px;
+    }
+
+    .input-wrap input:focus {
+      border-color: rgba(212,163,23,.55);
+      box-shadow: 0 0 0 3px rgba(212,163,23,.07);
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: #68766e;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .summary {
+      display: none;
+      margin-bottom: 18px;
+      border: 1px solid rgba(16,185,129,.13);
+      background: rgba(16,185,129,.045);
+      border-radius: 13px;
+      overflow: hidden;
+    }
+
+    .summary.show {
+      display: block;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: 12px;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .summary-row span:first-child {
+      color: #7d8982;
+    }
+
+    .summary-row strong {
+      color: #e4e9e5;
+    }
+
+    .summary-row.net strong {
+      color: #10b981;
+    }
+
+    .submit {
+      width: 100%;
+      height: 53px;
+      border: 0;
+      border-radius: 13px;
+      background: #d4a317;
+      color: #07130b;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .submit:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .history-link,
+    .account-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #9ba69f;
+      text-decoration: none;
+      font-size: 13px;
+      margin-top: 18px;
+    }
+
+    .history-link:hover,
+    .account-link:hover {
+      color: #d4a317;
+    }
+
+    .empty-account {
+      text-align: center;
+      padding: 10px 0 2px;
+    }
+
+    .empty-account i {
+      color: #d4a317;
+      font-size: 28px;
+      margin-bottom: 13px;
+    }
+
+    .empty-account h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .empty-account p {
+      color: #7f8b84;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 17px;
+    }
+
+    .account-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 11px 16px;
+      border-radius: 10px;
+      background: rgba(212,163,23,.1);
+      border: 1px solid rgba(212,163,23,.2);
+      color: #d4a317;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: #03140a;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading.hide {
+      display: none;
+    }
+
+    .loader {
+      text-align: center;
+      color: #d4a317;
+    }
+
+    .loader i {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .loader div {
+      color: #9aa69f;
+      font-size: 13px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      width: calc(100% - 30px);
+      max-width: 450px;
+      padding: 16px;
+      border-radius: 13px;
+      background: #071d11;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 15px 45px rgba(0,0,0,.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 4000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+      border-color: rgba(16,185,129,.3);
+    }
+
+    .toast.error {
+      border-color: rgba(248,113,113,.3);
+    }
+
+    .toast-title {
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .toast-text {
+      color: #9ca8a1;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 600px) {
+
+      .header {
+        padding: 0 14px;
+      }
+
+      .user {
+        display: none;
+      }
+
+      .container {
+        padding: 24px 14px 45px;
+      }
+
+      .heading h1 {
+        font-size: 24px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .balance {
+        font-size: 25px;
+      }
+
+      .account-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loading" id="loading">
+    <div class="loader">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+      <div>Chargement...</div>
+    </div>
+  </div>
+
+
+  <header class="header">
+
+    <a href="dashboard.html" class="back">
+      <i class="fa-solid fa-arrow-left"></i>
+      Retour
+    </a>
+
+    <div class="logo">ROLEX</div>
+
+    <div class="user" id="userName">—</div>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="heading">
+      <h1>Retrait</h1>
+      <p>
+        Demandez le transfert de votre solde vers
+        votre compte de retrait enregistré.
+      </p>
+    </div>
+
+
+    <div class="card balance-card">
+
+      <div class="label">
+        Solde disponible
+      </div>
+
+      <div class="balance" id="balance">
+        —
+      </div>
+
+    </div>
+
+
+    <div class="card account-card">
+
+      <div class="account-title">
+        Compte de retrait
+      </div>
+
+      <div id="accountContent">
+        <!-- Rempli depuis la base -->
+      </div>
+
+    </div>
+
+
+    <div class="card" id="withdrawalCard">
+
+      <div class="form-title">
+        Nouvelle demande
+      </div>
+
+
+      <div class="warning">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        <div>
+
+          <strong id="availabilityTitle">
+            Conditions de retrait
+          </strong>
+
+          <span id="availabilityText">
+            Chargement des conditions...
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <form id="withdrawalForm">
+
+        <div class="field">
+
+          <label for="amount">
+            Montant du retrait
+          </label>
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-money-bill-transfer"></i>
+
+            <input
+              type="number"
+              id="amount"
+              min="1"
+              step="1"
+              placeholder="Montant"
+              required
+            >
+
+          </div>
+
+          <div class="hint" id="minimumHint">
+            Minimum : —
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="transactionPassword">
+            Mot de passe de transaction
+          </label>
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              type="password"
+              id="transactionPassword"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="Votre mot de passe de transaction"
+              required
+            >
+
+          </div>
+
+          <div class="hint">
+            Le mot de passe est vérifié directement
+            par le système sécurisé.
+          </div>
+
+        </div>
+
+
+        <div class="summary" id="summary">
+
+          <div class="summary-row">
+            <span>Montant demandé</span>
+            <strong id="summaryRequested">—</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Frais</span>
+            <strong id="summaryFee">—</strong>
+          </div>
+
+          <div class="summary-row net">
+            <span>Montant net</span>
+            <strong id="summaryNet">—</strong>
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="submit"
+          id="submitButton"
+        >
+          <i class="fa-solid fa-paper-plane"></i>
+          Demander le retrait
+        </button>
+
+      </form>
+
+
+      <a
+        href="transactions.html"
+        class="history-link"
+      >
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        Voir mes transactions
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <div class="toast" id="toast">
+
+    <div
+      class="toast-title"
+      id="toastTitle"
+    ></div>
+
+    <div
+      class="toast-text"
+      id="toastText"
+    ></div>
+
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="retrait.js"></script>
+
+</body>
+              </html>
