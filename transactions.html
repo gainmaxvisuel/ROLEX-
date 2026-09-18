@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Transactions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #03140a;
+      --bg-2: #051e10;
+      --card: #082716;
+      --card-hover: #0b321d;
+
+      --gold: #d4a317;
+      --gold-light: #f0c94f;
+
+      --green: #10b981;
+      --green-light: #34d399;
+
+      --white: #ffffff;
+      --text: #eaf5ee;
+      --muted: #8fa99a;
+
+      --border: rgba(212, 163, 23, 0.20);
+      --border-light: rgba(255, 255, 255, 0.07);
+
+      --danger: #ef4444;
+      --warning: #f59e0b;
+
+      --shadow: 0 20px 55px rgba(0, 0, 0, .30);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(16, 185, 129, .08),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at bottom left,
+          rgba(212, 163, 23, .05),
+          transparent 30%
+        ),
+        var(--bg);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar {
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 28px;
+
+      background: rgba(3, 20, 10, .95);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 11px;
+      object-fit: cover;
+
+      border: 1px solid rgba(212, 163, 23, .45);
+
+      box-shadow:
+        0 8px 25px rgba(0, 0, 0, .25);
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--gold-light);
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 11px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid var(--border);
+      background: rgba(8, 39, 22, .85);
+
+      color: var(--text);
+      font-size: 21px;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--gold-light);
+      border-color: var(--gold);
+      transform: translateX(-2px);
+    }
+
+    /* =========================
+       CONTAINER
+    ========================= */
+
+    .container {
+      width: min(1450px, calc(100% - 32px));
+
+      margin: 0 auto;
+
+      padding: 36px 0 60px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      margin-bottom: 8px;
+
+      color: var(--gold);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .page-heading h1 {
+      font-size: clamp(27px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -.8px;
+    }
+
+    .page-heading p {
+      margin-top: 8px;
+
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       TABLE CARD
+    ========================= */
+
+    .table-card {
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(8, 39, 22, .97),
+          rgba(5, 30, 16, .97)
+        );
+
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .table-header {
+      min-height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 18px 20px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .table-subtitle {
+      margin-top: 5px;
+
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .transaction-total {
+      min-width: 110px;
+
+      padding: 9px 14px;
+
+      text-align: center;
+
+      border: 1px solid rgba(16, 185, 129, .20);
+      border-radius: 10px;
+
+      background: rgba(16, 185, 129, .07);
+    }
+
+    .transaction-total span {
+      display: block;
+
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .transaction-total strong {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--green-light);
+      font-size: 17px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px;
+
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    thead {
+      background: rgba(212, 163, 23, .055);
+    }
+
+    th {
+      padding: 15px 14px;
+
+      text-align: left;
+
+      color: #b9cbbf;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: .8px;
+      text-transform: uppercase;
+
+      white-space: nowrap;
+
+      border-right: 1px solid rgba(212, 163, 23, .10);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th:last-child {
+      border-right: none;
+    }
+
+    td {
+      padding: 15px 14px;
+
+      font-size: 13px;
+
+      vertical-align: middle;
+
+      border-right: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    td:last-child {
+      border-right: none;
+    }
+
+    tbody tr {
+      transition: background .18s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(16, 185, 129, .035);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* =========================
+       TRANSACTION ID
+    ========================= */
+
+    .transaction-code {
+      display: inline-block;
+
+      padding: 7px 9px;
+
+      border-radius: 8px;
+
+      background: rgba(212, 163, 23, .07);
+      border: 1px solid rgba(212, 163, 23, .16);
+
+      color: var(--gold-light);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      white-space: nowrap;
+      letter-spacing: .2px;
+    }
+
+    /* =========================
+       TYPE
+    ========================= */
+
+    .transaction-type {
+      color: var(--text);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 88px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: 9px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .5px;
+
+      white-space: nowrap;
+    }
+
+    .status-success {
+      color: #5ee39b;
+
+      background: rgba(34, 197, 94, .10);
+
+      border: 1px solid rgba(34, 197, 94, .24);
+    }
+
+    .status-pending {
+      color: #fbbf24;
+
+      background: rgba(245, 158, 11, .10);
+
+      border: 1px solid rgba(245, 158, 11, .24);
+    }
+
+    .status-danger {
+      color: #f87171;
+
+      background: rgba(239, 68, 68, .10);
+
+      border: 1px solid rgba(239, 68, 68, .24);
+    }
+
+    .status-neutral {
+      color: #b6c4bc;
+
+      background: rgba(148, 163, 184, .08);
+
+      border: 1px solid rgba(148, 163, 184, .18);
+    }
+
+    /* =========================
+       AMOUNT
+    ========================= */
+
+    .amount {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .amount-positive {
+      color: var(--green-light);
+    }
+
+    .amount-negative {
+      color: #f87171;
+    }
+
+    .amount-neutral {
+      color: var(--text);
+    }
+
+    .balance {
+      color: #d3e1d8;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .description {
+      max-width: 250px;
+
+      color: #aebfb4;
+
+      line-height: 1.45;
+    }
+
+    .date {
+      color: #a9bbb0;
+
+      font-size: 11px;
+
+      white-space: nowrap;
+    }
+
+    /* =========================
+       LOADING / EMPTY / ERROR
+    ========================= */
+
+    .state-box {
+      padding: 65px 25px;
+
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 27px;
+      height: 27px;
+
+      margin: 0 auto 15px;
+
+      border-radius: 50%;
+
+      border: 2px solid rgba(212, 163, 23, .18);
+      border-top-color: var(--gold);
+
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .state-icon {
+      width: 50px;
+      height: 50px;
+
+      margin: 0 auto 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      border: 1px solid var(--border);
+
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .state-title {
+      color: var(--text);
+
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .state-text {
+      margin-top: 7px;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .retry-btn {
+      margin-top: 17px;
+
+      padding: 10px 17px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: rgba(212, 163, 23, .08);
+
+      color: var(--gold-light);
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .retry-btn:hover {
+      background: rgba(212, 163, 23, .15);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      .topbar {
+        height: 64px;
+        padding: 0 15px;
+      }
+
+      .brand-logo {
+        width: 37px;
+        height: 37px;
+      }
+
+      .brand-name {
+        font-size: 17px;
+      }
+
+      .container {
+        width: calc(100% - 20px);
+        padding-top: 25px;
+      }
+
+      .page-heading {
+        margin-bottom: 20px;
+      }
+
+      .table-header {
+        padding: 15px;
+      }
+
+      .table-title {
+        font-size: 15px;
+      }
+
+      .table-subtitle {
+        max-width: 220px;
+      }
+
+      .transaction-total {
+        min-width: 80px;
+      }
+
+      .transaction-total strong {
+        font-size: 15px;
+      }
+
+      .table-card {
+        border-radius: 15px;
+      }
+
+      th,
+      td {
+        padding: 13px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <a href="dashboard.html" class="brand">
+
+      <img
+        src="logo.jpg"
+        alt="ROLEX"
+        class="brand-logo"
+        onerror="this.style.display='none';"
+      >
+
+      <span class="brand-name">
+        ROLEX
+      </span>
+
+    </a>
+
+    <button
+      type="button"
+      class="back-btn"
+      id="backBtn"
+      aria-label="Retour"
+    >
+      ←
+    </button>
+
+  </header>
+
+
+  <main class="container">
+
+    <section class="page-heading">
+
+      <div class="eyebrow">
+        ROLEX Finance
+      </div>
+
+      <h1>
+        Transactions
+      </h1>
+
+      <p>
+        Consultez l'historique réel de vos opérations.
+      </p>
+
+    </section>
+
+
+    <section class="table-card">
+
+      <div class="table-header">
+
+        <div>
+
+          <div class="table-title">
+            Historique des opérations
+          </div>
+
+          <div class="table-subtitle">
+            Chaque identifiant et chaque information proviennent de votre base de données.
+          </div>
+
+        </div>
+
+
+        <div class="transaction-total">
+
+          <span>
+            Total
+          </span>
+
+          <strong id="transactionCount">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- État de chargement -->
+      <div
+        id="tableState"
+        class="state-box"
+      >
+
+        <div class="spinner"></div>
+
+        <div class="state-title">
+          Chargement des transactions
+        </div>
+
+        <div class="state-text">
+          Récupération des données...
+        </div>
+
+      </div>
+
+
+      <!-- Tableau -->
+      <div
+        id="tableWrapper"
+        class="table-wrapper"
+        style="display:none;"
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Identifiant professionnel
+              </th>
+
+              <th>
+                Type
+              </th>
+
+              <th>
+                Statut
+              </th>
+
+              <th>
+                Montant
+              </th>
+
+              <th>
+                Solde avant
+              </th>
+
+              <th>
+                Solde après
+              </th>
+
+              <th>
+                Description
+              </th>
+
+              <th>
+                Date
+              </th>
+
+              <th>
+                Terminé le
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="transactionsBody"></tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="transactions.js"></script>
+
+</body>
+</html>
