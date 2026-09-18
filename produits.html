@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Produits</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #03140a;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* HEADER */
+
+    .header {
+      height: 68px;
+      background: #051e10;
+      border-bottom: 1px solid rgba(212,163,23,.18);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 22px;
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: #d4a317;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .back:hover {
+      opacity: .8;
+    }
+
+    .logo {
+      color: #d4a317;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+
+    .user-name {
+      color: #9aa79f;
+      font-size: 13px;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* CONTAINER */
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: auto;
+      padding: 28px 18px 50px;
+    }
+
+    .title {
+      margin-bottom: 25px;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 7px;
+    }
+
+    .title p {
+      color: #839189;
+      font-size: 14px;
+    }
+
+    /* TOP CARDS */
+
+    .top-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .top-card {
+      background: #071d11;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 17px;
+      padding: 19px;
+    }
+
+    .top-card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .top-label {
+      color: #839189;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .top-value {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .icon-box {
+      width: 46px;
+      height: 46px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background: rgba(212,163,23,.10);
+      color: #d4a317;
+
+      flex-shrink: 0;
+    }
+
+    .stock-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 13px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stock-link:hover {
+      border-color: rgba(212,163,23,.4);
+      color: #d4a317;
+    }
+
+    /* SECTION */
+
+    .section-title {
+      margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+      font-size: 20px;
+    }
+
+    /* PRODUCTS */
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .product-card {
+      background: #071d11;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      transition: .2s;
+    }
+
+    .product-card:hover {
+      border-color: rgba(212,163,23,.28);
+      transform: translateY(-2px);
+    }
+
+    .product-main {
+      display: flex;
+      gap: 17px;
+      padding: 18px;
+    }
+
+    /* IMAGE A GAUCHE */
+
+    .product-image {
+      width: 145px;
+      height: 145px;
+
+      flex-shrink: 0;
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0c2c19,
+          #06170d
+        );
+
+      border: 1px solid rgba(212,163,23,.12);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #d4a317;
+      font-size: 32px;
+    }
+
+    /* INFOS */
+
+    .product-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 800;
+
+      margin-bottom: 15px;
+
+      word-break: break-word;
+    }
+
+    .product-info {
+      display: grid;
+      gap: 9px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: #829088;
+    }
+
+    .info-value {
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .buy-area {
+      padding: 0 18px 18px;
+    }
+
+    .buy-button {
+      width: 100%;
+
+      padding: 12px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: #d4a317;
+      color: #03140a;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .buy-button:hover {
+      filter: brightness(1.08);
+    }
+
+    .buy-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* EMPTY */
+
+    .empty {
+      grid-column: 1 / -1;
+
+      background: #071d11;
+
+      border: 1px solid rgba(255,255,255,.06);
+
+      border-radius: 16px;
+
+      padding: 45px 20px;
+
+      text-align: center;
+
+      color: #829088;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0,0,0,.78);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      z-index: 1000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 440px;
+
+      background: #071d11;
+
+      border: 1px solid rgba(212,163,23,.28);
+
+      border-radius: 18px;
+
+      padding: 22px;
+
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 18px;
+    }
+
+    .modal-head h2 {
+      font-size: 20px;
+    }
+
+    .close-modal {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 9px;
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      background: rgba(255,255,255,.05);
+
+      color: #ffffff;
+
+      cursor: pointer;
+    }
+
+    .confirmation-product {
+      display: flex;
+      gap: 13px;
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.04);
+
+      margin-bottom: 18px;
+    }
+
+    .confirmation-image {
+      width: 65px;
+      height: 65px;
+
+      flex-shrink: 0;
+
+      overflow: hidden;
+
+      border-radius: 10px;
+
+      background: #0b2817;
+    }
+
+    .confirmation-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .confirmation-info {
+      min-width: 0;
+    }
+
+    .confirmation-name {
+      font-size: 15px;
+      font-weight: 800;
+
+      margin-bottom: 7px;
+    }
+
+    .confirmation-price {
+      color: #d4a317;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .confirmation-text {
+      color: #9aa79f;
+      font-size: 13px;
+      line-height: 1.55;
+
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .modal-button {
+      padding: 12px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .cancel-button {
+      background: rgba(255,255,255,.06);
+      color: #ffffff;
+
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .confirm-button {
+      background: #d4a317;
+      color: #03140a;
+
+      border: none;
+    }
+
+    .modal-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* MESSAGE */
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 22px;
+
+      transform: translateX(-50%) translateY(20px);
+
+      width: calc(100% - 30px);
+      max-width: 450px;
+
+      padding: 15px 17px;
+
+      border-radius: 12px;
+
+      background: #071d11;
+
+      border: 1px solid rgba(212,163,23,.3);
+
+      box-shadow: 0 12px 40px rgba(0,0,0,.4);
+
+      opacity: 0;
+      pointer-events: none;
+
+      transition: .25s;
+
+      z-index: 2000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-title {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .toast-text {
+      color: #a4afa9;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .toast.success {
+      border-color: rgba(74,222,128,.35);
+    }
+
+    .toast.error {
+      border-color: rgba(248,113,113,.35);
+    }
+
+    /* LOADING */
+
+    .loading {
+      position: fixed;
+      inset: 0;
+
+      background: #03140a;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 3000;
+    }
+
+    .loading.hide {
+      display: none;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-icon {
+      color: #d4a317;
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .loader-text {
+      color: #a0aaa5;
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+
+      .header {
+        padding: 0 14px;
+      }
+
+      .logo {
+        font-size: 19px;
+      }
+
+      .user-name {
+        display: none;
+      }
+
+      .container {
+        padding: 22px 14px 45px;
+      }
+
+      .title h1 {
+        font-size: 24px;
+      }
+
+      .top-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .product-main {
+        gap: 13px;
+      }
+
+      .product-image {
+        width: 110px;
+        height: 110px;
+      }
+
+      .product-name {
+        font-size: 16px;
+        margin-bottom: 11px;
+      }
+
+      .info-row {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 430px) {
+
+      .product-main {
+        display: block;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 180px;
+        margin-bottom: 15px;
+      }
+
+      .product-content {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CHARGEMENT -->
+
+  <div class="loading" id="loading">
+
+    <div class="loader-content">
+
+      <div class="loader-icon">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+      </div>
+
+      <div class="loader-text">
+        Chargement des produits...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <a href="dashboard.html" class="back">
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+      Retour
+
+    </a>
+
+    <div class="logo">
+      ROLEX
+    </div>
+
+    <div class="user-name" id="userName">
+      —
+    </div>
+
+  </header>
+
+
+  <!-- CONTENU -->
+
+  <main class="container">
+
+    <div class="title">
+
+      <h1>
+        Produits
+      </h1>
+
+      <p>
+        Consultez les produits actuellement disponibles.
+      </p>
+
+    </div>
+
+
+    <!-- STATISTIQUES -->
+
+    <div class="top-cards">
+
+      <div class="top-card">
+
+        <div class="top-card-content">
+
+          <div>
+
+            <div class="top-label">
+              Produits disponibles
+            </div>
+
+            <div class="top-value"
+                 id="productCount">
+              —
+            </div>
+
+          </div>
+
+          <div class="icon-box">
+
+            <i class="fa-solid fa-box"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="top-card">
+
+        <div class="top-card-content">
+
+          <div>
+
+            <div class="top-label">
+              Mon stock
+            </div>
+
+            <a href="investissements.html"
+               class="stock-link">
+
+              <i class="fa-solid fa-chart-line"></i>
+
+              Voir mon stock
+
+            </a>
+
+          </div>
+
+          <div class="icon-box">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- LISTE -->
+
+    <div class="section-title">
+
+      <h2>
+        Tous les produits
+      </h2>
+
+    </div>
+
+
+    <div class="products"
+         id="products">
+
+      <div class="empty">
+        Chargement des produits...
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- MODAL CONFIRMATION -->
+
+  <div class="modal"
+       id="purchaseModal">
+
+    <div class="modal-box">
+
+      <div class="modal-head">
+
+        <h2>
+          Confirmation d'achat
+        </h2>
+
+        <button
+          class="close-modal"
+          id="closeModal"
+          type="button">
+
+          <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+      </div>
+
+
+      <div class="confirmation-product">
+
+        <div class="confirmation-image"
+             id="confirmationImage">
+
+          <div class="image-placeholder">
+            <i class="fa-solid fa-box"></i>
+          </div>
+
+        </div>
+
+
+        <div class="confirmation-info">
+
+          <div class="confirmation-name"
+               id="confirmationName">
+            —
+          </div>
+
+          <div class="confirmation-price"
+               id="confirmationPrice">
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="confirmation-text">
+
+        Vous êtes sur le point de confirmer l'achat
+        de ce produit. Le montant sera traité par
+        le système ROLEX selon les règles enregistrées
+        dans la base de données.
+
+      </div>
+
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="modal-button cancel-button"
+          id="cancelPurchase">
+
+          Annuler
+
+        </button>
+
+        <button
+          type="button"
+          class="modal-button confirm-button"
+          id="confirmPurchase">
+
+          Confirmer l'achat
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MESSAGE -->
+
+  <div class="toast"
+       id="toast">
+
+    <div class="toast-title"
+         id="toastTitle">
+      —
+    </div>
+
+    <div class="toast-text"
+         id="toastText">
+      —
+    </div>
+
+  </div>
+
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="produits.js"></script>
+
+</body>
+      </html>
