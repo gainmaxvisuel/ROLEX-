@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Compte de retrait</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #03140a;
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 18px 15px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 22px;
+    }
+
+    .back {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      border: 1px solid rgba(212,163,23,.22);
+      background: #061c10;
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 25px;
+    }
+
+    .title-area h1 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .title-area p {
+      margin-top: 4px;
+      color: #82968b;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #071f12, #04170c);
+      border: 1px solid rgba(212,163,23,.17);
+      border-radius: 18px;
+      padding: 19px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.20);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 17px;
+    }
+
+    .country-box {
+      background: rgba(16,185,129,.055);
+      border: 1px solid rgba(16,185,129,.14);
+      border-radius: 12px;
+      padding: 13px;
+      margin-bottom: 18px;
+    }
+
+    .country-box span {
+      display: block;
+      color: #7f9388;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .country-box strong {
+      font-size: 14px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #b7c5bd;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      height: 50px;
+      border-radius: 12px;
+      border: 1px solid #183b28;
+      background: #04170c;
+      color: #fff;
+      outline: none;
+      padding: 0 14px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: #d4a317;
+      box-shadow: 0 0 0 3px rgba(212,163,23,.08);
+    }
+
+    input::placeholder {
+      color: #52675b;
+    }
+
+    .operator-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .operator-label label {
+      margin: 0;
+    }
+
+    .operator-required {
+      color: #8c9d94;
+      font-size: 10px;
+    }
+
+    .operators-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+    }
+
+    .operator-card {
+      position: relative;
+      min-height: 112px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: #051a0e;
+      cursor: pointer;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: .2s ease;
+      user-select: none;
+    }
+
+    .operator-card:hover {
+      border-color: rgba(212,163,23,.40);
+      transform: translateY(-1px);
+    }
+
+    .operator-card.selected {
+      border-color: #d4a317;
+      background: linear-gradient(
+        145deg,
+        rgba(212,163,23,.11),
+        rgba(16,185,129,.05)
+      );
+      box-shadow: 0 0 0 1px rgba(212,163,23,.15);
+    }
+
+    .operator-card.selected::after {
+      content: "✓";
+      position: absolute;
+      right: 9px;
+      top: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #d4a317;
+      color: #07140b;
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .operator-image {
+      width: 54px;
+      height: 54px;
+      border-radius: 13px;
+      background: #fff;
+      padding: 5px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .operator-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      color: #e9eeeB;
+    }
+
+    .security {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(212,163,23,.045);
+      border: 1px solid rgba(212,163,23,.11);
+      margin-top: 18px;
+    }
+
+    .security-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 9px;
+      background: rgba(212,163,23,.10);
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .security p {
+      color: #a9b7b0;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .submit {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #d4a317, #b88b0d);
+      color: #07140b;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: .2s;
+    }
+
+    .submit:hover {
+      filter: brightness(1.05);
+    }
+
+    .submit:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      color: #ffb4b4;
+      background: rgba(180,30,30,.10);
+      border: 1px solid rgba(255,80,80,.20);
+    }
+
+    .message.success {
+      color: #a7f3d0;
+      background: rgba(16,185,129,.08);
+      border: 1px solid rgba(16,185,129,.18);
+    }
+
+    .loading {
+      text-align: center;
+      color: #879a90;
+      padding: 30px 0;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 380px) {
+      .operators-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .operator-card {
+        min-height: 92px;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 10px 14px;
+      }
+
+      .operator-image {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="topbar">
+
+      <a href="retrait.html" class="back" aria-label="Retour">
+        ‹
+      </a>
+
+      <div class="title-area">
+        <h1>Compte de retrait</h1>
+        <p>
+          Configurez le compte utilisé pour recevoir vos retraits
+        </p>
+      </div>
+
+    </div>
+
+
+    <div id="loading" class="loading">
+      Chargement des informations...
+    </div>
+
+
+    <div id="content" class="hidden">
+
+      <div id="message" class="message"></div>
+
+
+      <!-- INFORMATIONS DU COMPTE -->
+      <section class="card">
+
+        <div class="card-title">
+          Informations du bénéficiaire
+        </div>
+
+
+        <div class="country-box">
+
+          <span>Pays enregistré</span>
+
+          <strong id="country">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="ownerName">
+            Nom du bénéficiaire
+          </label>
+
+          <input
+            id="ownerName"
+            type="text"
+            autocomplete="name"
+            placeholder="Nom complet du bénéficiaire"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="phone">
+            Numéro de téléphone
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="Numéro utilisé pour recevoir le retrait"
+          >
+
+        </div>
+
+      </section>
+
+
+      <!-- OPERATEURS -->
+      <section class="card">
+
+        <div class="operator-label">
+
+          <label>
+            Opérateur de retrait
+          </label>
+
+          <span class="operator-required">
+            Sélection obligatoire
+          </span>
+
+        </div>
+
+
+        <div
+          id="operatorsGrid"
+          class="operators-grid"
+        >
+
+          <div
+            class="operator-card"
+            data-operator="Orange Money"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/orange-money.png"
+              alt="Orange Money"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              Orange Money
+            </span>
+
+          </div>
+
+
+          <div
+            class="operator-card"
+            data-operator="Moov Money"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/moov-money.png"
+              alt="Moov Money"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              Moov Money
+            </span>
+
+          </div>
+
+
+          <div
+            class="operator-card"
+            data-operator="Wave"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/wave.png"
+              alt="Wave"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              Wave
+            </span>
+
+          </div>
+
+
+          <div
+            class="operator-card"
+            data-operator="MTN"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/mtn.png"
+              alt="MTN"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              MTN
+            </span>
+
+          </div>
+
+
+          <div
+            class="operator-card"
+            data-operator="T-MONEY"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/t-money.png"
+              alt="T-MONEY"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              T-MONEY
+            </span>
+
+          </div>
+
+
+          <div
+            class="operator-card"
+            data-operator="Airtel Money"
+            tabindex="0"
+          >
+
+            <img
+              class="operator-image"
+              src="https://cbxjcwjlhvicurpndoyz.supabase.co/storage/v1/object/public/operator-images/airtel-money.png"
+              alt="Airtel Money"
+              loading="lazy"
+            >
+
+            <span class="operator-name">
+              Airtel Money
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="security">
+
+          <div class="security-icon">
+            ✓
+          </div>
+
+          <p>
+            Sélectionnez l'opérateur correspondant au numéro
+            indiqué ci-dessus. Cette information sera utilisée
+            pour traiter vos demandes de retrait.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- MOT DE PASSE -->
+      <section class="card">
+
+        <div class="card-title">
+          Mot de passe de transaction
+        </div>
+
+
+        <div class="field">
+
+          <label for="transactionPassword">
+            Nouveau mot de passe
+          </label>
+
+          <input
+            id="transactionPassword"
+            type="password"
+            inputmode="numeric"
+            autocomplete="new-password"
+            maxlength="20"
+            placeholder="Au moins 6 chiffres"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="transactionPasswordConfirm">
+            Confirmation
+          </label>
+
+          <input
+            id="transactionPasswordConfirm"
+            type="password"
+            inputmode="numeric"
+            autocomplete="new-password"
+            maxlength="20"
+            placeholder="Confirmez le mot de passe"
+          >
+
+        </div>
+
+
+        <div class="security">
+
+          <div class="security-icon">
+            •
+          </div>
+
+          <p>
+            Ce mot de passe sert uniquement à confirmer
+            vos demandes de retrait. Ne le communiquez à personne.
+          </p>
+
+        </div>
+
+
+        <button
+          id="submitBtn"
+          class="submit"
+          type="button"
+        >
+          Enregistrer le compte
+        </button>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="compte-retrait.js"></script>
+
+</body>
+            </html>
