@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Inscription</title>
+
+  <meta name="theme-color" content="#06150d">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #06150d;
+      --bg-2: #081c11;
+      --card: #0c2417;
+      --card-2: #102d1d;
+      --gold: #d4af37;
+      --gold-light: #f0d77a;
+      --green: #10b981;
+      --green-dark: #087f59;
+      --white: #ffffff;
+      --muted: #8fa49a;
+      --border: rgba(212, 175, 55, 0.16);
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,.10), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(16,185,129,.08), transparent 30%),
+        var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 15px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 470px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 14px;
+      border-radius: 18px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid rgba(212,175,55,.30);
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      background: #0d2418;
+    }
+
+    .brand-name {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--gold-light);
+    }
+
+    .brand-text {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card {
+      background: linear-gradient(
+        145deg,
+        rgba(16,45,29,.96),
+        rgba(8,28,17,.98)
+      );
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 27px 23px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.32);
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .card-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #d8e2dd;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap > i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 50px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 12px;
+      background: rgba(0,0,0,.20);
+      color: var(--white);
+      outline: none;
+      padding: 0 14px 0 42px;
+      font-family: inherit;
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    input::placeholder {
+      color: #667a70;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(212,175,55,.60);
+      box-shadow: 0 0 0 3px rgba(212,175,55,.08);
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #0c2417;
+      color: white;
+    }
+
+    .phone-row {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 9px;
+    }
+
+    .phone-row select {
+      padding-left: 39px;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7d9188;
+      cursor: pointer;
+      font-size: 14px;
+      background: none;
+      border: 0;
+      padding: 5px;
+    }
+
+    .password-toggle:hover {
+      color: var(--gold);
+    }
+
+    .referral-box {
+      border: 1px solid rgba(212,175,55,.13);
+      background: rgba(212,175,55,.035);
+      border-radius: 14px;
+      padding: 13px;
+      margin-bottom: 18px;
+    }
+
+    .referral-title {
+      font-size: 12px;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .referral-text {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .message {
+      display: none;
+      padding: 12px 13px;
+      border-radius: 11px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.20);
+      color: #ffb4b4;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(16,185,129,.08);
+      border: 1px solid rgba(16,185,129,.20);
+      color: #9af0ce;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 13px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--gold), #b88d16);
+      color: #08130d;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 14px;
+      transition: .2s ease;
+      box-shadow: 0 10px 25px rgba(212,175,55,.13);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 13px 30px rgba(212,175,55,.20);
+    }
+
+    .submit-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-btn i {
+      margin-right: 7px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .login-link a {
+      color: var(--gold-light);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      text-align: center;
+      color: #5f7369;
+      font-size: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 430px) {
+      .phone-row {
+        grid-template-columns: 130px 1fr;
+      }
+
+      .card {
+        padding: 23px 17px;
+      }
+
+      .brand-name {
+        font-size: 25px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .phone-row {
+        grid-template-columns: 115px 1fr;
+      }
+
+      input,
+      select {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="brand">
+
+      <!--
+        Logo chargé depuis le web.
+        Remplace uniquement cette URL lorsque nous aurons
+        l'URL officielle du logo ROLEX.
+      -->
+      <img
+        class="logo"
+        src="https://placehold.co/144x144/0c2417/d4af37?text=ROLEX"
+        alt="ROLEX"
+      >
+
+      <div class="brand-name">ROLEX</div>
+      <div class="brand-text">Créez votre compte</div>
+
+    </div>
+
+    <section class="card">
+
+      <h1 class="card-title">Inscription</h1>
+
+      <p class="card-subtitle">
+        Remplissez les informations ci-dessous pour créer votre compte.
+      </p>
+
+      <div id="message" class="message"></div>
+
+      <form id="registerForm" novalidate>
+
+        <div class="field">
+          <label for="fullName">Nom complet</label>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-user"></i>
+
+            <input
+              type="text"
+              id="fullName"
+              autocomplete="name"
+              placeholder="Votre nom complet"
+              minlength="2"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="country">Pays</label>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-globe"></i>
+
+            <select id="country" required>
+              <option value="BF">Burkina Faso (+226)</option>
+              <option value="BJ">Bénin (+229)</option>
+              <option value="TG">Togo (+228)</option>
+              <option value="CI">Côte d'Ivoire (+225)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Numéro de téléphone</label>
+
+          <div class="phone-row">
+
+            <div class="input-wrap">
+              <i class="fa-solid fa-phone"></i>
+
+              <select id="countryPrefix" aria-label="Indicatif">
+                <option value="+226">+226</option>
+                <option value="+229">+229</option>
+                <option value="+228">+228</option>
+                <option value="+225">+225</option>
+              </select>
+            </div>
+
+            <div class="input-wrap">
+              <input
+                type="tel"
+                id="phone"
+                inputmode="numeric"
+                autocomplete="tel"
+                placeholder="Numéro"
+                required
+              >
+            </div>
+
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Mot de passe</label>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              type="password"
+              id="password"
+              autocomplete="new-password"
+              placeholder="Minimum 6 caractères"
+              minlength="6"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Afficher le mot de passe"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="passwordConfirm">Confirmer le mot de passe</label>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <input
+              type="password"
+              id="passwordConfirm"
+              autocomplete="new-password"
+              placeholder="Confirmez votre mot de passe"
+              minlength="6"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordConfirmToggle"
+              aria-label="Afficher le mot de passe"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="referral-box">
+
+          <div class="referral-title">
+            Code de parrainage
+          </div>
+
+          <div class="referral-text">
+            Facultatif. Si vous avez reçu un code d'invitation,
+            vous pouvez le renseigner ci-dessous.
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label for="referralCode">
+            Code de parrainage
+          </label>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-link"></i>
+
+            <input
+              type="text"
+              id="referralCode"
+              placeholder="Code de parrainage"
+              autocomplete="off"
+            >
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          id="submitBtn"
+        >
+          <i class="fa-solid fa-user-plus"></i>
+          Créer mon compte
+        </button>
+
+      </form>
+
+      <div class="login-link">
+        Vous avez déjà un compte ?
+        <a href="connexion.html">Se connecter</a>
+      </div>
+
+    </section>
+
+    <div class="footer">
+      ROLEX
+    </div>
+
+  </main>
+
+  <script>
+    const SUPABASE_URL =
+      "https://cbxjcwjlhvicurpndoyz.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_KUd51SQCl10pIgztFFGq9Q_Jp1YCK6o";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
+          }
+        }
+      );
+
+    const registerForm =
+      document.getElementById("registerForm");
+
+    const submitBtn =
+      document.getElementById("submitBtn");
+
+    const message =
+      document.getElementById("message");
+
+    const country =
+      document.getElementById("country");
+
+    const countryPrefix =
+      document.getElementById("countryPrefix");
+
+    const phone =
+      document.getElementById("phone");
+
+    const password =
+      document.getElementById("password");
+
+    const passwordConfirm =
+      document.getElementById("passwordConfirm");
+
+    const referralCode =
+      document.getElementById("referralCode");
+
+
+    /*
+      Correspondance pays / indicatif.
+      Les codes pays sont ceux utilisés par la base ROLEX.
+    */
+
+    const countryPrefixes = {
+      BF: "+226",
+      BJ: "+229",
+      TG: "+228",
+      CI: "+225"
+    };
+
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+    function clearMessage() {
+
+      message.textContent = "";
+
+      message.className =
+        "message";
+
+    }
+
+
+    function togglePassword(input, button) {
+
+      const icon =
+        button.querySelector("i");
+
+      if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.className =
+          "fa-solid fa-eye-slash";
+
+      } else {
+
+        input.type = "password";
+
+        icon.className =
+          "fa-solid fa-eye";
+
+      }
+
+    }
+
+
+    document
+      .getElementById("passwordToggle")
+      .addEventListener("click", function () {
+
+        togglePassword(
+          password,
+          this
+        );
+
+      });
+
+
+    document
+      .getElementById("passwordConfirmToggle")
+      .addEventListener("click", function () {
+
+        togglePassword(
+          passwordConfirm,
+          this
+        );
+
+      });
+
+
+    country.addEventListener("change", function () {
+
+      const prefix =
+        countryPrefixes[this.value];
+
+      countryPrefix.value =
+        prefix;
+
+    });
+
+
+    /*
+      Permet également de récupérer automatiquement
+      le code de parrainage depuis :
+      
+      index.html?ref=REF-XXXXXXXX
+    */
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const referralFromUrl =
+      params.get("ref");
+
+    if (referralFromUrl) {
+
+      referralCode.value =
+        referralFromUrl.trim().toUpperCase();
+
+    }
+
+
+    /*
+      Nettoyage simple du numéro.
+      Le pays est envoyé séparément à PostgreSQL.
+    */
+
+    phone.addEventListener("input", function () {
+
+      this.value =
+        this.value.replace(/\D/g, "");
+
+    });
+
+
+    registerForm.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+        const fullName =
+          document
+            .getElementById("fullName")
+            .value
+            .trim();
+
+        const selectedCountry =
+          country.value;
+
+        const phoneValue =
+          phone.value.trim();
+
+        const passwordValue =
+          password.value;
+
+        const passwordConfirmValue =
+          passwordConfirm.value;
+
+        const referralValue =
+          referralCode.value.trim()
+            ? referralCode.value.trim().toUpperCase()
+            : null;
+
+
+        /*
+          Vérifications de formulaire.
+          Les règles métier restent dans PostgreSQL.
+        */
+
+        if (fullName.length < 2) {
+
+          showMessage(
+            "Veuillez saisir votre nom complet.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (!phoneValue) {
+
+          showMessage(
+            "Veuillez saisir votre numéro de téléphone.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (passwordValue.length < 6) {
+
+          showMessage(
+            "Le mot de passe doit contenir au moins 6 caractères.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (passwordValue !== passwordConfirmValue) {
+
+          showMessage(
+            "Les deux mots de passe ne correspondent pas.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        submitBtn.disabled = true;
+
+        submitBtn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Création du compte...';
+
+
+        try {
+
+          /*
+            Appel de la fonction PostgreSQL existante :
+
+            register_user(
+              p_full_name,
+              p_country_code,
+              p_phone,
+              p_password,
+              p_referral_code
+            )
+          */
+
+          const { data, error } =
+            await supabaseClient.rpc(
+              "register_user",
+              {
+                p_full_name: fullName,
+                p_country_code: selectedCountry,
+                p_phone: phoneValue,
+                p_password: passwordValue,
+                p_referral_code: referralValue
+              }
+            );
+
+
+          if (error) {
+
+            throw error;
+
+          }
+
+
+          /*
+            La fonction PostgreSQL retourne :
+            user_id
+            referral_code
+            balance
+          */
+
+          if (!data) {
+
+            throw new Error(
+              "La création du compte n'a retourné aucune donnée."
+            );
+
+          }
+
+
+          showMessage(
+            "Compte créé avec succès. Redirection vers la connexion...",
+            "success"
+          );
+
+
+          /*
+            On ne transmet pas le mot de passe dans l'URL.
+          */
+
+          setTimeout(function () {
+
+            window.location.href =
+              "connexion.html";
+
+          }, 1200);
+
+
+        } catch (error) {
+
+          console.error(
+            "Erreur inscription :",
+            error
+          );
+
+
+          let errorMessage =
+            "Impossible de créer le compte. Veuillez réessayer.";
+
+
+          if (error && error.message) {
+
+            errorMessage =
+              error.message;
+
+          }
+
+
+          /*
+            Quelques erreurs PostgreSQL peuvent contenir
+            un préfixe technique. On garde le message utile.
+          */
+
+          errorMessage =
+            errorMessage
+              .replace(/^Error:\s*/i, "")
+              .trim();
+
+
+          showMessage(
+            errorMessage,
+            "error"
+          );
+
+
+          submitBtn.disabled = false;
+
+          submitBtn.innerHTML =
+            '<i class="fa-solid fa-user-plus"></i> Créer mon compte';
+
+        }
+
+      }
+    );
+  </script>
+
+</body>
+  </html>
