@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ROLEX — Mon compte</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #03140a;
+      --card: #082716;
+      --card2: #0b321d;
+      --gold: #d4a317;
+      --gold-light: #f0c94f;
+      --green: #10b981;
+      --green-light: #34d399;
+      --text: #edf7f1;
+      --muted: #91aa9c;
+      --border: rgba(212,163,23,.20);
+      --line: rgba(255,255,255,.07);
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(16,185,129,.08), transparent 30%),
+        var(--bg);
+    }
+
+    .topbar {
+      height: 70px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(3,20,10,.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(15px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold-light);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .back {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--card);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 24px));
+      margin: auto;
+      padding: 30px 0 60px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 7px 0 22px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #082716, #051e10);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .card-subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 17px;
+    }
+
+    /* PROFILE */
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(212,163,23,.08);
+      border: 1px solid var(--border);
+      color: var(--gold-light);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .name {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .phone {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .status {
+      margin-left: auto;
+      padding: 7px 10px;
+      border-radius: 20px;
+      background: rgba(16,185,129,.10);
+      border: 1px solid rgba(16,185,129,.25);
+      color: var(--green-light);
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* INFORMATIONS */
+
+    .info-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--line);
+    }
+
+    .info {
+      padding: 14px 4px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .info:nth-child(odd) {
+      padding-right: 15px;
+      border-right: 1px solid var(--line);
+    }
+
+    .info:nth-child(even) {
+      padding-left: 15px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 13px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .gold {
+      color: var(--gold-light);
+    }
+
+    /* FINANCES */
+
+    .finance-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .finance {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .finance-label {
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 7px;
+    }
+
+    .finance-value {
+      color: var(--gold-light);
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    /* BUTTONS */
+
+    .buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .btn span:last-child {
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    .logout {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 11px;
+      border: 1px solid rgba(239,68,68,.25);
+      background: rgba(239,68,68,.06);
+      color: #fca5a5;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* LOADING */
+
+    #loading {
+      text-align: center;
+      color: var(--muted);
+      padding: 50px 20px;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 13px;
+      border-radius: 50%;
+      border: 2px solid rgba(212,163,23,.18);
+      border-top-color: var(--gold);
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #error {
+      display: none;
+      color: #fca5a5;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 650px) {
+
+      .container {
+        width: calc(100% - 20px);
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .profile {
+        align-items: flex-start;
+      }
+
+      .status {
+        margin-left: 0;
+      }
+
+      .info-list {
+        grid-template-columns: 1fr;
+      }
+
+      .info:nth-child(odd) {
+        padding-right: 4px;
+        border-right: 0;
+      }
+
+      .info:nth-child(even) {
+        padding-left: 4px;
+      }
+
+      .finance-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <a href="dashboard.html" class="brand">
+    <img src="logo.jpg" alt="ROLEX">
+    <span>ROLEX</span>
+  </a>
+
+  <button class="back" id="backBtn">
+    ←
+  </button>
+
+</header>
+
+
+<main class="container">
+
+  <div class="eyebrow">
+    ROLEX Finance
+  </div>
+
+  <h1>
+    Mon compte
+  </h1>
+
+  <p class="intro">
+    Consultez les informations de votre compte.
+  </p>
+
+
+  <div id="loading">
+
+    <div class="spinner"></div>
+
+    Chargement de votre compte...
+
+  </div>
+
+
+  <div id="content" style="display:none;">
+
+
+    <!-- PROFIL -->
+
+    <section class="card">
+
+      <div class="profile">
+
+        <div
+          class="avatar"
+          id="avatar"
+        >
+          —
+        </div>
+
+        <div>
+
+          <div
+            class="name"
+            id="fullName"
+          >
+            —
+          </div>
+
+          <div
+            class="phone"
+            id="phone"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div
+          class="status"
+          id="status"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFORMATIONS -->
+
+    <section class="card">
+
+      <div class="card-title">
+        Informations personnelles
+      </div>
+
+      <div class="card-subtitle">
+        Informations enregistrées sur votre compte.
+      </div>
+
+      <div class="info-list">
+
+        <div class="info">
+
+          <div class="label">
+            Identifiant professionnel
+          </div>
+
+          <div
+            class="value gold"
+            id="userCode"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="label">
+            Nom complet
+          </div>
+
+          <div
+            class="value"
+            id="infoName"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="label">
+            Téléphone
+          </div>
+
+          <div
+            class="value"
+            id="infoPhone"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="label">
+            Pays
+          </div>
+
+          <div
+            class="value"
+            id="country"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="label">
+            Code de parrainage
+          </div>
+
+          <div
+            class="value gold"
+            id="referralCode"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="label">
+            Date d'inscription
+          </div>
+
+          <div
+            class="value"
+            id="createdAt"
+          >
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FINANCES -->
+
+    <section class="card">
+
+      <div class="card-title">
+        Situation financière
+      </div>
+
+      <div class="card-subtitle">
+        Données financières enregistrées dans votre compte.
+      </div>
+
+      <div class="finance-grid">
+
+        <div class="finance">
+
+          <div class="finance-label">
+            Solde
+          </div>
+
+          <div
+            class="finance-value"
+            id="balance"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="finance">
+
+          <div class="finance-label">
+            Total bénéfices
+          </div>
+
+          <div
+            class="finance-value"
+            id="totalProfit"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="finance">
+
+          <div class="finance-label">
+            Total dépôts
+          </div>
+
+          <div
+            class="finance-value"
+            id="totalDeposits"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="finance">
+
+          <div class="finance-label">
+            Total retraits
+          </div>
+
+          <div
+            class="finance-value"
+            id="totalWithdrawals"
+          >
+            —
+          </div>
+
+        </div>
+
+        <div class="finance">
+
+          <div class="finance-label">
+            Total commissions
+          </div>
+
+          <div
+            class="finance-value"
+            id="totalCommissions"
+          >
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <section class="card">
+
+      <div class="card-title">
+        Gestion du compte
+      </div>
+
+      <div class="card-subtitle">
+        Accédez aux paramètres et informations de paiement.
+      </div>
+
+      <div class="buttons">
+
+        <a
+          href="compte-retrait.html"
+          class="btn"
+        >
+          <span>Compte de retrait</span>
+          <span>›</span>
+        </a>
+
+        <a
+          href="transactions.html"
+          class="btn"
+        >
+          <span>Mes transactions</span>
+          <span>›</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- DECONNEXION -->
+
+    <button
+      class="logout"
+      id="logoutBtn"
+    >
+      Déconnexion
+    </button>
+
+
+  </div>
+
+
+  <div
+    id="error"
+    class="card"
+  >
+    Impossible de charger votre compte.
+    <br>
+    <span id="errorMessage"></span>
+  </div>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="compte.js"></script>
+
+</body>
+</html>
