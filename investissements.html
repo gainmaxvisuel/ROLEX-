@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROLEX — Mon stock</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: #03140a;
+      color: #f5f7f6;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 22px 16px 40px;
+    }
+
+    /* HEADER */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(212,163,23,.22);
+      background: #071d10;
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: .2s;
+    }
+
+    .back-btn:hover {
+      background: #0b2917;
+    }
+
+    .title-box h1 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .title-box p {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #8fa097;
+    }
+
+    /* SUMMARY */
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: linear-gradient(145deg, #092217, #06180e);
+      border: 1px solid rgba(212,163,23,.15);
+      border-radius: 14px;
+      padding: 13px;
+    }
+
+    .summary-card i {
+      color: #d4a317;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .summary-label {
+      color: #819188;
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .summary-value {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    /* LIST */
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    #investmentsList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* BANK CARD */
+
+    .investment-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 158px;
+      background:
+        linear-gradient(135deg, rgba(16,185,129,.07), transparent 45%),
+        linear-gradient(145deg, #0a2417, #06170d);
+      border: 1px solid rgba(212,163,23,.20);
+      border-radius: 18px;
+      padding: 13px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.18);
+    }
+
+    .investment-card::after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      right: -65px;
+      top: -65px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,163,23,.08);
+      pointer-events: none;
+    }
+
+    .card-main {
+      display: flex;
+      gap: 13px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-image {
+      width: 92px;
+      height: 92px;
+      flex: 0 0 92px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #04130a;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .product-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .status {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 7px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+      background: rgba(16,185,129,.10);
+      color: #34d399;
+      border: 1px solid rgba(16,185,129,.18);
+    }
+
+    .status.completed {
+      color: #d4a317;
+      background: rgba(212,163,23,.09);
+      border-color: rgba(212,163,23,.18);
+    }
+
+    .status.inactive {
+      color: #9ca3af;
+      background: rgba(156,163,175,.08);
+      border-color: rgba(156,163,175,.14);
+    }
+
+    .values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .value-item {
+      min-width: 0;
+    }
+
+    .value-label {
+      color: #718078;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    .value-number {
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* BOTTOM INSIDE CARD */
+
+    .card-bottom {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .bottom-item {
+      min-width: 0;
+    }
+
+    .bottom-item.center {
+      text-align: center;
+    }
+
+    .bottom-item.right {
+      text-align: right;
+    }
+
+    .bottom-label {
+      color: #718078;
+      font-size: 8px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .bottom-value {
+      font-size: 9px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .countdown {
+      color: #d4a317;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .countdown.done {
+      color: #34d399;
+    }
+
+    /* EMPTY */
+
+    .empty {
+      background: #071b10;
+      border: 1px dashed rgba(212,163,23,.18);
+      border-radius: 16px;
+      padding: 35px 20px;
+      text-align: center;
+      color: #829088;
+    }
+
+    .empty i {
+      font-size: 24px;
+      color: #d4a317;
+      margin-bottom: 10px;
+    }
+
+    .empty h3 {
+      color: #e8ecea;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .empty p {
+      font-size: 11px;
+    }
+
+    /* LOADING */
+
+    .loading {
+      padding: 30px;
+      text-align: center;
+      color: #829088;
+      font-size: 12px;
+    }
+
+    .loading i {
+      color: #d4a317;
+      margin-right: 6px;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(100px);
+      background: #0b2417;
+      border: 1px solid rgba(212,163,23,.25);
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 10px;
+      font-size: 11px;
+      z-index: 9999;
+      opacity: 0;
+      transition: .3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.error {
+      border-color: rgba(239,68,68,.3);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 16px 11px 30px;
+      }
+
+      .summary {
+        gap: 7px;
+      }
+
+      .summary-card {
+        padding: 10px 8px;
+        border-radius: 12px;
+      }
+
+      .summary-value {
+        font-size: 12px;
+      }
+
+      .product-image {
+        width: 78px;
+        height: 78px;
+        flex-basis: 78px;
+      }
+
+      .investment-card {
+        min-height: 145px;
+        padding: 11px;
+        border-radius: 15px;
+      }
+
+      .card-main {
+        gap: 10px;
+      }
+
+      .product-name {
+        font-size: 12px;
+      }
+
+      .value-number {
+        font-size: 10px;
+      }
+
+      .card-bottom {
+        margin-top: 9px;
+        padding-top: 8px;
+      }
+
+      .bottom-label {
+        font-size: 7px;
+      }
+
+      .bottom-value {
+        font-size: 8px;
+      }
+
+      .countdown {
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <header class="topbar">
+      <a href="dashboard.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+
+      <div class="title-box">
+        <h1>Mon stock</h1>
+        <p>Vos investissements</p>
+      </div>
+
+      <div style="width:42px;"></div>
+    </header>
+
+    <section class="summary">
+
+      <div class="summary-card">
+        <i class="fa-solid fa-box"></i>
+        <div class="summary-label">Produits détenus</div>
+        <div class="summary-value" id="totalProducts">0</div>
+      </div>
+
+      <div class="summary-card">
+        <i class="fa-solid fa-wallet"></i>
+        <div class="summary-label">Montant investi</div>
+        <div class="summary-value" id="totalInvested">0 XOF</div>
+      </div>
+
+      <div class="summary-card">
+        <i class="fa-solid fa-chart-line"></i>
+        <div class="summary-label">Revenus générés</div>
+        <div class="summary-value" id="totalGenerated">0 XOF</div>
+      </div>
+
+    </section>
+
+    <div class="section-title">Mes produits</div>
+
+    <section id="investmentsList">
+      <div class="loading">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        Chargement...
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="investissements.js"></script>
+
+</body>
+  </html>
