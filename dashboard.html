@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROLEX — Dashboard</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #03140a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: #03140a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .loading div {
+      color: #d4a317;
+      font-weight: bold;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: #051e10;
+      border-right: 1px solid rgba(212,163,23,.2);
+      padding: 25px 18px;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .logo {
+      text-align: center;
+      color: #d4a317;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      margin-bottom: 35px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      margin-bottom: 7px;
+      border-radius: 10px;
+      color: #cbd5ce;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: rgba(212,163,23,.12);
+      color: #d4a317;
+    }
+
+    .menu i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .logout {
+      width: calc(100% - 36px);
+      margin-top: 12px;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: rgba(220,38,38,.1);
+      color: #f87171;
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 22px;
+    }
+
+    .user-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #d4a317;
+      color: #03140a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .content {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px 50px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: #94a39a;
+    }
+
+    .account-card {
+      background: linear-gradient(135deg,#0b3b22,#03140a);
+      border: 1px solid rgba(212,163,23,.35);
+      border-radius: 22px;
+      padding: 25px;
+      margin-bottom: 35px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .brand {
+      color: #d4a317;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+
+    .account-user {
+      text-align: right;
+    }
+
+    .phone {
+      color: #94a39a;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .balance-label {
+      color: #94a39a;
+      font-size: 13px;
+      margin-top: 38px;
+    }
+
+    .balance {
+      font-size: 34px;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+    }
+
+    .status {
+      color: #8fd1ad;
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn-gold {
+      background: #d4a317;
+      color: #03140a;
+    }
+
+    .btn-dark {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+      font-size: 20px;
+    }
+
+    .products {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .product {
+      min-width: 270px;
+      background: #071d11;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .product-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      background: rgba(212,163,23,.12);
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .product h3 {
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    .product-info {
+      display: grid;
+      gap: 9px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .info-row span:first-child {
+      color: #829189;
+    }
+
+    .info-row span:last-child {
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .empty {
+      width: 100%;
+      padding: 35px;
+      text-align: center;
+      color: #829189;
+      background: #071d11;
+      border-radius: 15px;
+    }
+
+    /* POPUP TELEGRAM */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+      background: #071d11;
+      border: 1px solid rgba(212,163,23,.3);
+      border-radius: 18px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .telegram-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(212,163,23,.12);
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 27px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #94a39a;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .telegram-links {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .telegram-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      text-align: left;
+      transition: .2s ease;
+    }
+
+    .telegram-link:hover {
+      background: rgba(212,163,23,.08);
+      border-color: rgba(212,163,23,.30);
+    }
+
+    .telegram-link-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(212,163,23,.12);
+      color: #d4a317;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .telegram-link-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .telegram-link-content strong {
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .telegram-link-content small {
+      font-size: 11px;
+      color: #94a39a;
+    }
+
+    .telegram-link > .fa-chevron-right {
+      color: #64746c;
+      font-size: 11px;
+    }
+
+    .telegram-later {
+      width: 100%;
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        left: -250px;
+        transition: .3s;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .menu-btn {
+        display: block;
+        cursor: pointer;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 25px 15px;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .balance {
+        font-size: 29px;
+      }
+
+      .card-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .actions .btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loading" id="loading">
+    <div>Chargement de ROLEX...</div>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="logo">ROLEX</div>
+
+    <nav class="menu">
+
+      <a href="dashboard.html" class="active">
+        <i class="fa-solid fa-house"></i>
+        <span>Accueil</span>
+      </a>
+
+      <a href="produits.html">
+        <i class="fa-solid fa-box"></i>
+        <span>Produit</span>
+      </a>
+
+      <a href="parrainage.html">
+        <i class="fa-solid fa-users"></i>
+        <span>Équipe</span>
+      </a>
+
+      <a href="compte.html">
+        <i class="fa-solid fa-user"></i>
+        <span>Profil</span>
+      </a>
+
+      <a href="investissements.html">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Mon stock</span>
+      </a>
+
+      <a href="transactions.html">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Transactions</span>
+      </a>
+
+      <!-- GROUPE TELEGRAM -->
+      <a
+        href="https://t.me/+iVFjPi7FveM0NDRk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa-brands fa-telegram"></i>
+        <span>Groupe Telegram</span>
+      </a>
+
+      <!-- CANAL TELEGRAM -->
+      <a
+        href="https://t.me/rolex973"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa-solid fa-bullhorn"></i>
+        <span>Canal Telegram</span>
+      </a>
+
+      <!-- SERVICE CLIENT -->
+      <a
+        href="http://t.me/EXONPAYSER"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa-solid fa-headset"></i>
+        <span>Service client</span>
+      </a>
+
+    </nav>
+
+    <button class="logout" id="logoutBtn">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Déconnexion
+    </button>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <button class="menu-btn" id="menuBtn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div></div>
+
+      <div class="user-mini">
+
+        <strong id="topUserName">—</strong>
+
+        <div class="avatar" id="avatar">
+          R
+        </div>
+
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <div class="welcome">
+
+        <h1>
+          Bienvenue, <span id="welcomeName">—</span>
+        </h1>
+
+        <p>
+          Voici votre espace ROLEX.
+        </p>
+
+      </div>
+
+      <div class="account-card">
+
+        <div class="card-top">
+
+          <div class="brand">
+            ROLEX
+          </div>
+
+          <div class="account-user">
+
+            <strong id="cardUserName">
+              —
+            </strong>
+
+            <div class="phone" id="cardPhone">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="balance-label">
+          Solde disponible
+        </div>
+
+        <div class="balance" id="balance">
+          —
+        </div>
+
+        <div class="card-bottom">
+
+          <div class="status">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span id="accountStatus">
+              —
+            </span>
+
+          </div>
+
+          <div class="actions">
+
+            <a
+              href="depot.html"
+              class="btn btn-gold"
+            >
+              Dépôt
+            </a>
+
+            <a
+              href="retrait.html"
+              class="btn btn-dark"
+            >
+              Retrait
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="section-title">
+
+        <h2>
+          Produits disponibles
+        </h2>
+
+        <a
+          href="produits.html"
+          class="btn btn-dark"
+        >
+          Voir tout
+        </a>
+
+      </div>
+
+      <div
+        class="products"
+        id="products"
+      >
+
+        <div class="empty">
+          Chargement des produits...
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- POPUP TELEGRAM -->
+
+  <div
+    class="modal"
+    id="telegramModal"
+  >
+
+    <div class="modal-box">
+
+      <div class="telegram-icon">
+        <i class="fa-brands fa-telegram"></i>
+      </div>
+
+      <h2>
+        Rejoignez ROLEX
+      </h2>
+
+      <p>
+        Rejoignez nos espaces Telegram pour
+        recevoir les informations et contacter
+        notre service client.
+      </p>
+
+      <div class="telegram-links">
+
+        <a
+          href="https://t.me/+iVFjPi7FveM0NDRk"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="telegram-link"
+        >
+
+          <span class="telegram-link-icon">
+            <i class="fa-solid fa-users"></i>
+          </span>
+
+          <span class="telegram-link-content">
+
+            <strong>
+              Groupe Telegram
+            </strong>
+
+            <small>
+              Rejoindre la communauté
+            </small>
+
+          </span>
+
+          <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+
+        <a
+          href="https://t.me/rolex973"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="telegram-link"
+        >
+
+          <span class="telegram-link-icon">
+            <i class="fa-solid fa-bullhorn"></i>
+          </span>
+
+          <span class="telegram-link-content">
+
+            <strong>
+              Canal Telegram
+            </strong>
+
+            <small>
+              Recevoir les annonces ROLEX
+            </small>
+
+          </span>
+
+          <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+
+        <a
+          href="http://t.me/EXONPAYSER"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="telegram-link"
+        >
+
+          <span class="telegram-link-icon">
+            <i class="fa-solid fa-headset"></i>
+          </span>
+
+          <span class="telegram-link-content">
+
+            <strong>
+              Service client
+            </strong>
+
+            <small>
+              Contacter l'assistance
+            </small>
+
+          </span>
+
+          <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+      </div>
+
+      <button
+        class="btn btn-dark telegram-later"
+        id="laterTelegram"
+      >
+        Plus tard
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- SUPABASE AVANT dashboard.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="dashboard.js"></script>
+
+</body>
+  </html>
