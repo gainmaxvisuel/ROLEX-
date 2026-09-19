@@ -458,7 +458,7 @@ async function loadTransactions() {
       error
     } =
       await supabaseClient.rpc(
-        "get_my_transactions",
+        "get_my_operations",
         {
           p_token: token
         }
