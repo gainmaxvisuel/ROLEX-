@@ -218,70 +218,63 @@ function showToast(
 /* =========================================================
    CHARGER LA PAGE
    ========================================================= */
-
 async function loadDepositPage() {
+
+  console.log("DEPOT : début chargement");
 
   try {
 
-    /* =====================================================
-       DASHBOARD
-       ===================================================== */
+    console.log("DEPOT : appel get_my_dashboard");
 
     const {
       data,
       error
-    } =
-      await supabaseClient.rpc(
-        "get_my_dashboard",
-        {
-          p_token:
-            sessionToken
-        }
-      );
+    } = await supabaseClient.rpc(
+      "get_my_dashboard",
+      {
+        p_token: sessionToken
+      }
+    );
+
+    console.log("DEPOT : dashboard =", data);
+    console.log("DEPOT : erreur dashboard =", error);
 
     if (error) {
       throw error;
     }
 
     if (!data) {
-
-      throw new Error(
-        "Session invalide."
-      );
+      throw new Error("Session invalide.");
     }
 
     userName.textContent =
-      data.full_name ||
-      "Utilisateur";
+      data.full_name || "Utilisateur";
 
     balance.textContent =
-      formatMoney(
-        data.balance
-      );
+      formatMoney(data.balance);
 
-
-    /* =====================================================
-       PAYS
-       ===================================================== */
 
     userCountry =
-      String(
-        data.country_code || ""
-      )
-      .trim()
-      .toUpperCase();
+      String(data.country_code || "")
+        .trim()
+        .toUpperCase();
+
+    console.log(
+      "DEPOT : pays utilisateur =",
+      userCountry
+    );
+
 
     if (!userCountry) {
-
       throw new Error(
         "Le pays de votre compte n'est pas défini."
       );
     }
 
 
-    /* =====================================================
-       MINIMUM DEPOT
-       ===================================================== */
+    console.log(
+      "DEPOT : chargement minimum"
+    );
 
     const {
       data: settingsData,
@@ -290,11 +283,14 @@ async function loadDepositPage() {
       await supabaseClient
         .from("settings")
         .select("value")
-        .eq(
-          "key",
-          "deposit_minimum"
-        )
+        .eq("key", "deposit_minimum")
         .maybeSingle();
+
+    console.log(
+      "DEPOT : settings =",
+      settingsData,
+      settingsError
+    );
 
     if (
       !settingsError &&
@@ -303,14 +299,10 @@ async function loadDepositPage() {
     ) {
 
       depositMinimum =
-        Number(
-          settingsData.value
-        );
+        Number(settingsData.value);
 
       minimumAmount.textContent =
-        formatMoney(
-          depositMinimum
-        );
+        formatMoney(depositMinimum);
 
       amountInput.min =
         depositMinimum;
@@ -322,9 +314,9 @@ async function loadDepositPage() {
     }
 
 
-    /* =====================================================
-       METHODES DE PAIEMENT
-       ===================================================== */
+    console.log(
+      "DEPOT : appel méthodes paiement"
+    );
 
     const {
       data: methods,
@@ -333,10 +325,19 @@ async function loadDepositPage() {
       await supabaseClient.rpc(
         "get_my_deposit_payment_methods",
         {
-          p_token:
-            sessionToken
+          p_token: sessionToken
         }
       );
+
+    console.log(
+      "DEPOT : méthodes =",
+      methods
+    );
+
+    console.log(
+      "DEPOT : erreur méthodes =",
+      methodsError
+    );
 
     if (methodsError) {
       throw methodsError;
@@ -347,12 +348,20 @@ async function loadDepositPage() {
         ? methods
         : [];
 
+    console.log(
+      "DEPOT : rendu des méthodes"
+    );
+
     renderPaymentMethods();
+
+    console.log(
+      "DEPOT : chargement terminé"
+    );
 
   } catch (error) {
 
     console.error(
-      "Erreur chargement dépôt :",
+      "DEPOT : ERREUR COMPLETE",
       error
     );
 
@@ -364,11 +373,12 @@ async function loadDepositPage() {
 
   } finally {
 
-    if (loading) {
+    console.log(
+      "DEPOT : suppression du chargement"
+    );
 
-      loading.classList.add(
-        "hide"
-      );
+    if (loading) {
+      loading.classList.add("hide");
     }
   }
 }
