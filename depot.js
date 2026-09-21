@@ -496,56 +496,39 @@ function renderPaymentMethods() {
    SELECTION OPERATEUR
    ========================================================= */
 
-function selectMethod(
-  method,
-  button
-) {
-
-  selectedMethod =
-    method;
-
-
-  document
-    .querySelectorAll(
-      ".method-button"
-    )
-    .forEach(
-      item => {
-        item.classList.remove(
-          "active"
-        );
-      }
-    );
-
-
-  button.classList.add(
-    "active"
+const template =
+  String(
+    method.ussd_template || ""
   );
 
 
-  /*
-   * =======================================================
-   * IMPORTANT
-   *
-   * On affiche le numéro de réception
-   * SEULEMENT si le template USSD contient
-   * {receiver}.
-   *
-   * Moov :
-   * *555*2*1*{receiver}*{amount}#
-   *
-   * Orange :
-   * *144*4*6*{amount}#
-   *
-   * Donc Orange n'affiche PAS le numéro.
-   * =======================================================
-   */
+/*
+ * =======================================================
+ * CÔTE D'IVOIRE
+ *
+ * Le numéro de réception vient directement
+ * de la base de données, même si le template USSD
+ * est vide.
+ * =======================================================
+ */
 
-  const template =
-    String(
-      method.ussd_template || ""
-    );
+if (
+  userCountry === "CI" &&
+  method.receiver
+) {
 
+  receiverNumber.textContent =
+    method.receiver;
+
+  receiverMessage.textContent =
+    method.instructions ||
+    "Veuillez effectuer le paiement sur ce numéro.";
+
+  receiverBox.classList.add(
+    "show"
+  );
+
+} else {
 
   const needsReceiver =
     template.includes(
@@ -570,11 +553,6 @@ function selectMethod(
 
   } else {
 
-    /*
-     * Orange Money :
-     * aucune boîte de numéro.
-     */
-
     receiverNumber.textContent =
       "";
 
@@ -585,9 +563,10 @@ function selectMethod(
       "show"
     );
   }
+}
 
 
-  updateUSSD();
+updateUSSD();
 }
 
 
